@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpPost("login")] // http://localhost:5000/api/account/login
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
 
             if (string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password))
@@ -56,7 +56,10 @@ namespace API.Controllers
                 return Unauthorized(new {message = "Invalid password"});
             }
 
-            return Ok(user);
+            return new UserDto{
+                Username = user.UserName,
+                Token = tokenService.CreateToken(user)
+            };
         }
 
         private static bool VerifyPassword(string password, byte[] storedHash, byte[] storedSalt)
