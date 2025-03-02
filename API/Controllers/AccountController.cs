@@ -83,7 +83,7 @@ namespace API.Controllers
             using var hmac = new HMACSHA512(); // Generates a new random salt automatically
 
             return new AppUser
-            {
+            { 
                 UserName = username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)), // Hashing the password
                 PasswordSalt = hmac.Key // Storing the salt
